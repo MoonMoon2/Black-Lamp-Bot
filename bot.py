@@ -59,38 +59,19 @@ messageIndex = {
 }
 containsMessageIndex = {
     # Returns the corresponding text if it contains the keyword unless it interferes with the pMI or mI
-    'determination' : 'Knowing the mouse might one day leave its hole and get the cheese... It fills you with determination.',
-    'china' : 'https://www.youtube.com/watch?v=RDrfE9I8_hs',
-    'tunak' : 'https://www.youtube.com/watch?v=vTIIMJ9tUc8',
-    'tokyo' : 'https://www.youtube.com/watch?v=XxK54P_4PiA',
-    'ghoul' : 'https://www.youtube.com/watch?v=XxK54P_4PiA',
-    'nye' : 'https://www.youtube.com/watch?v=26OE9Bq-lr8',
-    'yas' : 'https://www.youtube.com/watch?v=26OE9Bq-lr8',
-    'taco' : 'https://www.youtube.com/watch?v=vZkjRVjge0g',
-    'taco bell' : 'https://www.youtube.com/watch?v=vZkjRVjge0g',
-    'senpai' : 'NOTICE ME SENPAI!!!! \nhttp://vignette4.wikia.nocookie.net/yandere-simulator/images/e/ea/Senpai_Sep18.png/revision/latest?cb=20150920021049',
-    'jurassic' : 'https://www.youtube.com/watch?v=-w-58hQ9dLk',
-    'my point' : 'https://www.youtube.com/watch?v=WOOw2yWMSfk',
-    'shrek' : 'https://www.youtube.com/watch?v=cevWfNbRVpo',
-    'america' : 'America is dead. All hail Rumpland.',
-    'rump' : 'FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK https://www.youtube.com/watch?v=AtbMnixO2nc FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK FUCK RUMP'
+        'trump' : 'HEIL DEIN FÜHRER DONALD J TRUMP! https://img.buzzfeed.com/buzzfeed-static/static/2015-11/30/22/enhanced/webdr01/enhanced-19879-1448941828-1.jpg'
 }
 # The message to display on the help command (in the on_message async event)
 helpMessage = """```
-Welcome to VictiBot!
-Some sample commands:
-    !ping
-    !about
-    !hello
-There are a few more but not all are available on every server
-To display this message type !help
+Welcome to Victory
+Based off the Victobot Code by Team 1418
+
 ```"""
 # Combined blacklist/whitelist of users
 botCommanders = {
     'Adrian#7972' : True,
     'MoonMoon#9830' : True,
-    'Timmy#6089' : True,
-    'kirissen3319#5432' : True
+    'Josh Nicholson#8673' : True
 }
 # Add as many insults as you want.
 insultList = [
@@ -141,7 +122,7 @@ def on_ready():
     print('------')
     yield from client.send_message(client.get_channel('243737800992751617'), 'Starting')
     # Turns out this is annoying
-    yield from client.send_message(client.get_channel(lastchannel), 'Victibot is online and ready! Currently running as ' + client.user.name + ' (ID ' + client.user.id + '). Last updated by user: ' + lastuser + ' on ' + lasttime + ' (UTC). Enjoy your time with VictiBot as we watch civilization fall to pieces!')
+    yield from client.send_message(client.get_channel(lastchannel), 'Victory is online and ready! Currently running as ' + client.user.name + ' (ID ' + client.user.id + '). Last updated by user: ' + lastuser + ' on ' + lasttime + ' ')
 
 @client.async_event
 # Process and respond to all messages the bot receives
@@ -154,12 +135,12 @@ def on_message(message):
     msg = message.content
     returnMsg = ''
     messageIsClean = False
-    # Log non-bot messages
-    if not message.author.bot:
-        try:
-            yield from client.send_message(client.get_channel('243737800992751617'), str(message.author) + ' Said: ' + msg + ' At: ' + localtime + ' (UTC) on channel: ' + message.channel.name + ' of server: ' + message.server.name)
-        except:
-            pass
+    #Log All Messages from specific channels to a channel specifically for them
+    try:
+        if message.server == '242639681760657410':
+            yield from client.send_message(client.get_channel('251385015437492224'), str(message.author) + ' Said: ' + msg + ' At: ' + localtime + ' (UTC) on channel: ' + message.channel.name + ' of server: ' + message.server.name)
+    except:
+        pass
     # Only send back message if user that sent the triggering message isn't a bot
     msg = message.content.lower()
     if (not message.author.bot):
@@ -329,10 +310,10 @@ def on_message(message):
                     for key, value in containsMessageIndex.items():
                         if key in msg:
                             returnMsg = (value)
-    if (not message.server.name == 'Team 1418') or (messageIsClean and returnMsg != ''):
-        yield from client.send_message(message.channel, returnMsg)
-    elif not foundNoCommands:
-        yield from client.send_message(message.channel, 'Sorry, but the VictiBot command you have requested has been _disabled_ on this server. Please try somewhere else.')
+#    if (not message.server.name == 'Team 1418') or (messageIsClean and returnMsg != ''):
+#        yield from client.send_message(message.channel, returnMsg)
+#    elif not foundNoCommands:
+#        yield from client.send_message(message.channel, 'Sorry, but the VictiBot command you have requested has been _disabled_ on this server. Please try somewhere else.')
 
 @client.async_event
 # Respond on a new member joining
@@ -346,7 +327,7 @@ def on_member_remove(member):
 
 
 # Get token from token.txt
-with open('token.txt', 'r') as token_file:
+with open('Token.txt', 'r') as token_file:
     # Parse into a string, and get rid of trailing newlines
     token = token_file.read().replace('\n', '')
 # It is only fair that whoever is running the bot should know their own token
