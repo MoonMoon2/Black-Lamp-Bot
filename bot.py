@@ -13,10 +13,8 @@
 # Requires all of these except lxml for now, because the VPS hosting it has some problems with dpkg and tex-common (NOTE: I have identified these as part of the high-priority Ubuntu bug #1236951)
 import discord
 import asyncio
-import subprocess
 import requests
 import json
-import os
 import itertools
 from lxml import html
 import time
@@ -34,7 +32,6 @@ print (lastchannel)
 lastuser = lastchannel[22:]
 lastuser = lastuser[:-7]
 lastchannel = lastchannel[2:20]
-lasttime = str(subprocess.Popen('cat lasttime', shell=True, stdout=subprocess.PIPE).stdout.read())
 lasttime = lasttime[2:-3]
 print (lastuser)
 print (lastchannel)
@@ -175,24 +172,6 @@ def on_message(message):
             returnMsg = returnMsg + '\n' + ('Explanation: ' + r.json()['explanation'])
             messageIsClean = True
         # Automatically save session data, update from github, and restart
-        elif msg == (PREFIX + 'update'):
-            # Confirm that the bot is updating
-            yield from client.send_message(message.channel, 'Updating...')
-            localtime = time.asctime( time.localtime(time.time()) )
-            timezone = time.altzone
-            print ('Time and Date: ' + localtime + ' UTC + (' + str(timezone) + ')')
-            # Start a git pull to update bot
-            updateresults = (str(subprocess.Popen('git pull', shell=True, stdout=subprocess.PIPE).stdout.read()))
-            print (updateresults)
-            print ('Username: ' + str(message.author))
-            print (str(subprocess.Popen('touch lastchannel && echo "' + str(message.channel.id) + '" | cat > lastchannel && echo "' + str(message.author) + '" cat >> lastchannel', shell=True, stdout=subprocess.PIPE).stdout.read()))
-            print (str(subprocess.Popen('touch lasttime && echo "' + localtime + '" | cat > lasttime', shell=True, stdout=subprocess.PIPE).stdout.read()))
-            print ('Local Time: ' + localtime)
-            yield from client.send_message(message.channel, 'Update Successful! Restarting...')
-            # Restart
-            subprocess.Popen('python3 bot.py', shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-            os.abort()
-            messageIsClean = True
         # Mute function still a work in progress, considering deprecating it
         elif msg.startswith(PREFIX + 'mute'):
             name = message.content[6:]
